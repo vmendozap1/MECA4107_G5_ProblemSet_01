@@ -9,6 +9,17 @@
 ##########################################################
 
 ## Punto 5. Predicting Earnings
+
+#Imputacion Nivel educacion 
+
+table <- table  %>%
+  mutate(maxEducLevel = ifelse(is.na(maxEducLevel), mean(maxEducLevel, na.rm=T) , maxEducLevel))
+
+
+variables_categoricas <- c("sex", "maxEducLevel" )
+
+db<- db %>% mutate_at(variables_categoricas, as.factor)
+
 table1<- table  %>% select(log_ingtot_1,
                            age,
                            sex, 
