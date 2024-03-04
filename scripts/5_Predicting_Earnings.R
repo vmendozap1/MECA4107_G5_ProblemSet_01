@@ -16,13 +16,13 @@ table <- table  %>%
   mutate(maxEducLevel = ifelse(is.na(maxEducLevel), mean(maxEducLevel, na.rm=T) , maxEducLevel))
 
 
-variables_categoricas <- c("sex", "maxEducLevel" )
+variables_categoricas <- c("Sexo", "maxEducLevel" )
 
 db<- db %>% mutate_at(variables_categoricas, as.factor)
 
 table1<- table  %>% select(log_ingtot_1,
-                           age,
-                           sex, 
+                           Edad,
+                           Sexo, 
                            totalHoursWorked, 
                            maxEducLevel)
 skim(table1)
@@ -43,7 +43,7 @@ testing <- db[-inTrain,]
 
 ##Modelos##
 #Modelo 1a 
-form_1<- log_ingtot_1 ~ sex
+form_1<- log_ingtot_1 ~ Sexo
 modelo1a <- lm(form_1,
                data = training)
 
@@ -53,7 +53,7 @@ score1a<- RMSE(predictions, testing$log_ingtot_1)
 score1a
 
 #Modelo 1b 
-form_1b <- log_ingtot_1 ~ age + age^2
+form_1b <- log_ingtot_1 ~ Edad + Edad^2
 modelo1b <- lm(form_1b,
                data = training)
 
@@ -62,7 +62,7 @@ score1b<- RMSE(predictions, testing$log_ingtot_1)
 score1b
 
 #Modelo 2 
-form_2 <- log_ingtot_1 ~ age + sex 
+form_2 <- log_ingtot_1 ~ Edad + Sexo 
 modelo2 <- lm(form_2,
               data = training)
 
@@ -71,7 +71,7 @@ score2 <- RMSE(predictions, testing$log_ingtot_1)
 score2
 
 #Modelo 3
-form_3 <- log_ingtot_1 ~ age + age^2 + sex 
+form_3 <- log_ingtot_1 ~ Edad + Edad^2 + Sexo
 modelo3 <- lm(form_3,
               data = training)
 
@@ -80,7 +80,7 @@ score3 <- RMSE (predictions, testing$log_ingtot_1)
 score3
 
 #Modelo4 
-form_4 <- log_ingtot_1 ~ age + age^2 + sex +totalHoursWorked 
+form_4 <- log_ingtot_1 ~ Edad + Edad^2 + Sexo +totalHoursWorked 
 modelo4 <- lm(form_4,
               data = training)
 
@@ -89,8 +89,8 @@ score4 <- RMSE (predictions, testing$log_ingtot_1)
 score4
 
 #Modelo5 
-form_5 <- log_ingtot_1 ~ poly(age,3,raw=TRUE) +
-  sex + poly(age,3,raw=TRUE):sex + maxEducLevel
+form_5 <- log_ingtot_1 ~ poly(Edad,3,raw=TRUE) +
+  Sexo + poly(Edad,3,raw=TRUE):Sexo + maxEducLevel
 modelo5 <- lm(form_5,
               data = training)
 
@@ -99,8 +99,8 @@ score5 <- RMSE (predictions, testing$log_ingtot_1)
 score5
 
 #Modelo 6
-form_6 <- log_ingtot_1 ~ poly(age,3,raw=TRUE) +
-  sex + poly(age,3,raw=TRUE):sex + totalHoursWorked + poly(maxEducLevel,3,raw=TRUE) + poly(maxEducLevel,3,raw=TRUE):age
+form_6 <- log_ingtot_1 ~ poly(Edad,3,raw=TRUE) +
+  Sexo + poly(Edad,3,raw=TRUE):Sexo + totalHoursWorked + poly(maxEducLevel,3,raw=TRUE) + poly(maxEducLevel,3,raw=TRUE):Edad
 
 modelo6 <- lm(form_6,
               data = training)
